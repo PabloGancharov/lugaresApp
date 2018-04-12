@@ -12,12 +12,30 @@ import {
   View
 } from 'react-native';
 
+
+import MapView from 'react-native-maps';
+import { Marker } from 'react-native-maps';
+
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
     'Cmd+D or shake for dev menu',
   android: 'Double tap R on your keyboard to reload,\n' +
     'Shake or press menu button for dev menu',
 });
+
+
+// const styles = StyleSheet.create({
+//   container: {
+//     StyleSheet.absoluteFillObject,
+//     height: 400,
+//     width: 400,
+//     justifyContent: 'flex-end',
+//     alignItems: 'center',
+//   },
+//   map: {
+//     StyleSheet.absoluteFillObject,
+//   },
+// });
 
 type Props = {};
 export default class App extends Component<Props> {
@@ -29,6 +47,17 @@ export default class App extends Component<Props> {
       latitude: null,
       longitude: null,
       error: null,
+      region: {
+            latitude: -32,
+            longitude: -32,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421
+          },
+          marker: {
+            latitude: -32,
+            longitude: -32
+
+          }
     };
   }
 
@@ -39,6 +68,17 @@ export default class App extends Component<Props> {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
           error: null,
+          region: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421
+          },
+          marker: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+
+          }
         });
       },
       (error) => this.setState({ error: error.message }),
@@ -46,15 +86,33 @@ export default class App extends Component<Props> {
     );
   }
 
+
   render() {
     return (
-      <View style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Latitude: {this.state.latitude}</Text>
-        <Text>Longitude: {this.state.longitude}</Text>
-        {this.state.error ? <Text>Error: {this.state.error}</Text> : null}
+      <View style ={StyleSheet.absoluteFillObject}>
+        <MapView
+          style={StyleSheet.absoluteFillObject}
+          region={this.state.region}>
+            <Marker
+              coordinate={this.state.marker}
+              title="usted esta aqui"
+              description="Hola Tino!"
+            />
+        </MapView>
+
       </View>
     );
   }
+
+  // render() {
+  //   return (
+  //     <View style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}>
+  //       <Text>Latitude: {this.state.latitude}</Text>
+  //       <Text>Longitude: {this.state.longitude}</Text>
+  //       {this.state.error ? <Text>Error: {this.state.error}</Text> : null}
+  //     </View>
+  //   );
+  // }
 }
 
 const styles = StyleSheet.create({
